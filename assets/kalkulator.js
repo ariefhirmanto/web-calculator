@@ -48,7 +48,7 @@ function handleOperator(operator) {
 
 function performCalculation() {
     if (calculator.firstNumber == null || calculator.operator == null) {
-        alert("Belum ada operator");
+        alert("Tidak dapat dilakukan perhitungan");
         return;
     }
 
@@ -59,7 +59,15 @@ function performCalculation() {
         result = parseInt(calculator.firstNumber) - parseInt(calculator.displayNumber);
     }
 
+    const history = {
+        firstNumber: calculator.firstNumber,
+        secondNumber: calculator.displayNumber,
+        operator: calculator.operator,
+        result: result
+    }
+    putHistory(history);
     calculator.displayNumber = result;
+    renderHistory();
 }
 
 const buttons = document.querySelectorAll(".button");
@@ -79,6 +87,9 @@ for (let button of buttons) {
         if (target.classList.contains('equals')) {
             performCalculation();
             updateDisplay();
+            calculator.operator = null;
+            calculator.firstNumber = null;
+            calculator.waitingForSecondNumber = false;
             return;
         }
         if (target.classList.contains('operator')) {
